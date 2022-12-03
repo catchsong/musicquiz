@@ -9,11 +9,13 @@ class Chatting_socket extends Component {
       chat : [],
       message : "",
       nickname : "",  
+      server_connect : "OFF",
     }
   }
 
   //message[0] = nickname message[1] = 내용
   componentDidMount(){
+    
     socket.on("message", (message) => {
       this.setState((state) => {
         const new_chat = state.chat.concat([[message[0], message[1]]])
@@ -24,7 +26,13 @@ class Chatting_socket extends Component {
   }
 
   render() {
-    
+    socket.on('connect', () => {
+      console.log(socket.connected)
+      if(socket.connected)
+        this.setState({ server_connect : "ON"})
+      else
+        this.setState({ server_connect : "OFF"})
+    });
     const sendMessageHandler = () => {
       socket.emit("message", [this.state.nickname,this.state.message]);
     };
@@ -34,6 +42,7 @@ class Chatting_socket extends Component {
       return (
         <div className="App">
         <div>
+          <h2>서버 연결: {this.state.server_connect}</h2>
           <h1>Message</h1>
           <ul>
             {this.state.chat.map((data, idx) => {

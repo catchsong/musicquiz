@@ -96,6 +96,7 @@ class App extends Component {
           결과 : {this.state.res}     
         </h3>
       </div>
+      
       <Chatting_socket/>
 
     </div>
