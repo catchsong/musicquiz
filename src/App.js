@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Chatting_socket from './component/socket.js'
 import Add_music from './component/db_post.js'
-
+import Plus_music from './component/db_get.js'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +100,7 @@ class App extends Component {
       
       <Chatting_socket/>
       <Add_music/>
-
+      <Plus_music/>
     </div>
     )
   }
