@@ -15,7 +15,8 @@ class Chatting_socket extends Component {
 
   //message[0] = nickname message[1] = 내용
   componentDidMount(){
-    
+    if(this.state.server_connect == 'ON')
+    {
     socket.on("message", (message) => {
       this.setState((state) => {
         const new_chat = state.chat.concat([[message[0], message[1]]])
@@ -23,11 +24,11 @@ class Chatting_socket extends Component {
         this.setState({chat : new_chat})
       });
     });
+    }
   }
 
   render() {
     socket.on('connect', () => {
-      console.log(socket.connected)
       if(socket.connected)
         this.setState({ server_connect : "ON"})
       else
