@@ -28,3 +28,4 @@ socketio.on("connection", (socket) => {
 server.listen(port, function() {
     console.log(`Running ${port}`);
 });
+// db 유저 정보 
