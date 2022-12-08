@@ -1,0 +1,42 @@
+.btn {
+    color: white;
+    background: rgb(255, 0, 0);
+    padding: 0.375rem 0.75rem;
+    border: 1px solid teal;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+.input {
+  width: 50%;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+.msg {
+  flex-direction: column;
+  overflow-y:auto;
+}
+
+.chatWrap {
+  overflow-y : scroll;
+  height: 40vh;
+  width: 95%;
+  border: 1px solid #ddd;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.chatWrap::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
+
+.chatLog {
+  height: 30vh;
+}
+

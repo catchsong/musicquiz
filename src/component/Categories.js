@@ -14,7 +14,12 @@ const categories = [
     {
         name: 'login',
         text: '로그인'
+    },
+    {
+      name: 'chat',
+      text: '채팅'
     }
+    
   ];
 const CategoriesBlock = styled.div`
   display: flex;

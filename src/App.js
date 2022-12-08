@@ -8,6 +8,7 @@ import Login from './pages/Login.js';
 import Plus_music from './pages/Plus.js';
 import Categories from './component/Categories.js';
 import Home from './pages/Home.js';
+import Game from './pages/Game.js';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/plus" element={<Plus_music />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/chat" element={<Game />} />
       </Route>
     </Routes>
     

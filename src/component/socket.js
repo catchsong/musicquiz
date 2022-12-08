@@ -1,73 +1,82 @@
-import React, { Component } from "react";
+import { useEffect, useState, useRef} from "react";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:4000");
+import style from './socket.module.css'
 
-class Chatting_socket extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      chat : [],
+const port = 5000;
+const socket = io.connect(`http://localhost:${port}`);
+
+function Socket_chat(){
+/*      chat : [],
       message : "",
       nickname : "",  
-      server_connect : "OFF",
+      server_connect : "OFF", */
+  const [chat, setChat] = useState([]); 
+  const [message, setMessage] = useState([]); 
+  const [nickname, setNickname] = useState("");
+  const [server_status,setServer_status] = useState('ON');
+
+  const sendMessageHandler = () => {
+    socket.emit("message", [nickname,message]);
+    setMessage('');
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  };
+  const keyHandler = (e) => {
+    if(e.key === 'Enter') {
+      sendMessageHandler();
     }
   }
+  const scrollRef = useRef();
 
-  //message[0] = nickname message[1] = 내용
-  componentDidMount(){
-    if(this.state.server_connect == 'ON')
+  useEffect(() => {
+    if(socket.connected == true)
+      setServer_status('ON')
+    else
+      setServer_status('OFF')
+
+    if(server_status == 'ON')
     {
-    socket.on("message", (message) => {
-      this.setState((state) => {
-        const new_chat = state.chat.concat([[message[0], message[1]]])
-        console.log(this.state.chat)
-        this.setState({chat : new_chat})
+      socket.on("message", (message) => {
+        const new_chat = chat.concat([[message[0], message[1]]])
+        console.log(chat)
+        setChat(new_chat)
       });
-    });
     }
-  }
+  })
 
-  render() {
-    socket.on('connect', () => {
-      if(socket.connected)
-        this.setState({ server_connect : "ON"})
-      else
-        this.setState({ server_connect : "OFF"})
-    });
-    const sendMessageHandler = () => {
-      socket.emit("message", [this.state.nickname,this.state.message]);
-    };
-    
-    
-    
-      return (
-        <div className="App">
-        <div>
-          <h2>서버 연결: {this.state.server_connect}</h2>
-          <h1>Message</h1>
-          <ul>
-            {this.state.chat.map((data, idx) => {
-              return <li key={idx}>
-                {`${data[0]}: ${data[1]}`}
-                </li>
-            })}
-          </ul>
-        </div>
-  
-        <div>
-          nickname:
-          <input value={this.state.nickname}
-          onChange={(e) => this.setState({nickname : e.target.value})}
-          />
-          <br></br>
-          <input value={this.state.Message} 
-          onChange={(e) => this.setState({message : e.target.value})} 
-          />
-          <button onClick={sendMessageHandler}>Send</button>
-        </div>
+  return (
+    <div className="App">
+    <div>
+      <h2>서버 연결: {server_status}</h2>
+      <h1>Message</h1>
+      nickname:
+      <input className={style.input} value={nickname}
+      onChange={(e) => setNickname(e.target.value)}
+      />
+      <br></br>
+      <div className={style.chatWrap}>
+        <ul className={style.msg}>
+          {chat.map((data, idx) => {
+            console.log(data, idx)
+            return <li className={style.msg} key={idx}>
+              {`${data[0]}: ${data[1]}`}
+              </li>
+              
+          })}
+        </ul>
+        <div ref={scrollRef}/> 
       </div>
-      );
+    </div>
+    
+    <div>
+      <div className={style.chatLog}>
+        <input className={style.input} onKeyPress={keyHandler} value={message} 
+        onChange={(e) => setMessage((e.target.value))} 
+        />
+        <button className={style.btn} onClick={sendMessageHandler}>Send</button>
+      </div>
+    </div>
+  </div>
+  );
   }
-}
 
-export default Chatting_socket;
+export default Socket_chat;
