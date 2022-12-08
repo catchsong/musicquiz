@@ -25,10 +25,10 @@ function Musicplay(){
         }
       };
     // 전역변수 관리
-    const getStore = state => ({
-        ans = state.;
-        return ans;
-    });
+    //const getStore = state => ({
+    //    ans = state.;
+    //    return ans;
+    //});
     //
     return (
         <div>
