@@ -15,6 +15,9 @@ const Navigation = () => {
         <li>
             <Link to="/plus">Music Plus</Link>
         </li>
+        <li>
+            <Link to="/game">Music Play</Link>
+        </li>
       </ul>
     </nav>
   );

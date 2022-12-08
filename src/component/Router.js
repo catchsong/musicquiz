@@ -6,6 +6,7 @@ import Auth from '../pages/Auth'
 import Navigation from './Navigation';
 import Profile from "../pages/Profile";
 import Plus from '../pages/Plus';
+import Game from '../pages/Game';
 
 const AppRouter = ({ isLoggedIn , userObj}) => {
   return (
@@ -22,6 +23,9 @@ const AppRouter = ({ isLoggedIn , userObj}) => {
             </Route>
             <Route exact path="/plus">
               <Plus />
+            </Route>
+            <Route exact path="/game">
+              <Game />
             </Route>
             <Redirect from="*" to="/" />
           </>
