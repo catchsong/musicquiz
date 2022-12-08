@@ -1,9 +1,9 @@
-import Post_db from '../component/db_post.js'
+import Post_Db from '../component/db_post.js'
 
 const Plus = () => {
     return (
       <div>
-        <Post_db/>
+        <Post_Db/>
       </div>
     );
   };

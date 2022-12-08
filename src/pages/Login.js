@@ -1,7 +1,8 @@
+import Musicplay from '../component/music_play';
 const Login = () => {
     return (
       <div>
-        <p>로그인 페이지 입니다.</p>
+        <Musicplay/>
       </div>
     );
   };
