@@ -18,9 +18,19 @@ const socketio = require("socket.io")(server, {
 
 socketio.on("connection", (socket) => {
     socket.on("message", (message) => {
-      socketio.emit("message", message);
-      console.log(`message: ${message}`);
+      if(message[1]==message[2])
+      {
+        socketio.emit("message", message);
+        socketio.emit("correct",message);
+        console.log(`correct: ${message}`);
+      }
+      else
+      {
+        socketio.emit("message", message);
+        console.log(`message: ${message}`);
+      }
     });
+    
   });
 
   

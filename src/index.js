@@ -3,23 +3,27 @@ import './index.css';
 import App from './App';
 import {BrowserRouter} from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { createRoot } from 'react-dom/client';
+import { createStore, applyMiddleware, compose } from "redux";
+import { createRoot} from 'react-dom/client';
 
-let store = createStore(() => {
-  return [
-    {ans : 'none'}
-  ]
-});
+import rootReducer from "./reducer";
+
+
+
+
+// 위에서 만든 reducer를 스토어 만들때 넣어줍니다
+const store = createStore(rootReducer);
+
+
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 root.render(
-  
-  <BrowserRouter>
-    <Provider store={ store }>
+  <Provider store={ store }>
+    <BrowserRouter>
       <App />
-    </Provider>
-  </BrowserRouter>
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("root")
 );
 
 //reportWebVitals();

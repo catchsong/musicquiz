@@ -1,35 +1,36 @@
 import { useEffect, useState } from "react";
-import * as Get_db from '../component/db_get.js'
 import ReactPlayer from "react-player";
 import axios from 'axios';
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import { set_ans } from "../reducer/action";
+// redux
+const mapDispatchToProps = dispatch => {
+    return {
+        set_ans: ans => dispatch(set_ans(ans)),
+    };
+  };
 
 
-function Musicplay(){
+//
+const Musicplay = ({ set_ans }) => {
+    
+
     const [index, setIndex] = useState(0);
     const [play, setPlay] = useState(true);
     const [quizdb, setQuizdb] = useState([]);
+
+
     useEffect(() => {
        axios.get('http://localhost:4000/quizdb')
       .then((result) => {
             setQuizdb(result.data)  
+            set_ans(quizdb[index]?.ans)
         })
       .catch();
     },[index]);
     
-    const nextVideo = () => {
-        if (index < quizdb.length - 1) {
-            setIndex(index+1);
-        } else {
-            setIndex(0);
-        }
-      };
-    // 전역변수 관리
-    //const getStore = state => ({
-    //    ans = state.;
-    //    return ans;
-    //});
-    //
+    
+
     return (
         <div>
             <ReactPlayer 
@@ -46,7 +47,7 @@ function Musicplay(){
                 onEnded={() => nextVideo()} 
             />  
         재생중 : {`${play}`}<br></br>
-        정답 : {quizdb[index]?.ans}<br></br>
+        정답 : {`${quizdb[index]?.ans}`}<br></br>
 
         <button onClick={() => setPlay(true)}>재생</button>
         <button onClick={() => setPlay(false)}>일시정지</button>
@@ -56,4 +57,4 @@ function Musicplay(){
     )
 };
 
-export default Musicplay;
+export default connect(null, mapDispatchToProps)(Musicplay);

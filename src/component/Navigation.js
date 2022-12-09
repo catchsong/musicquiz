@@ -16,7 +16,7 @@ const Navigation = () => {
             <Link to="/plus">Music Plus</Link>
         </li>
         <li>
-            <Link to="/game">Music Plus</Link>
+            <Link to="/game">Chat</Link>
         </li>
       </ul>
     </nav>

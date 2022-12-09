@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use('/quizdb',musicRoute)
-const port = process.env.PORT || 4000;
+const port = 4000;
 const server = app.listen(port, () => {
     console.log('Connected to port ' + port)
 })
