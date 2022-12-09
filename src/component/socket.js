@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import style from './socket.module.css'
 
 const port = 5000;
-const socket = io.connect(`http://localhost:${port}`);
+const socket = io.connect(`http://121.155.53.218:${port}`);
 
 function Socket_chat(){
 /*      chat : [],

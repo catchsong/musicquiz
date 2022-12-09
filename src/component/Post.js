@@ -1,17 +1,18 @@
-import { dbService } from "../fbase";
-import React, { useState } from "react";
+import { dbService, storageService } from '../fbase';
+import React, { useState } from 'react';
 
 const Post = ({ postObj, isOwner }) => {
     const [editing, setEditing] = useState(false);
     const [newPost, setNewPost] = useState(postObj.text);
     //...
     const onDeleteClick = async () => {
-        const ok = window.confirm("삭제하시겠습니까?");
-        console.log(ok);
-        if (ok) {
-          await dbService.doc(`posts/${postObj.id}`).delete();
-        }
-      };
+      const ok = window.confirm("삭제하시겠습니까?");
+      console.log(ok)
+      if (ok) {
+        await dbService.doc(`posts/${postObj.id}`).delete();
+        await storageService.refFromURL(postObj.attachmentUrl).delete();
+      }
+    }
     const toggleEditing = () => setEditing((prev) => !prev);
     const onSubmit = async (event) => {
       event.preventDefault();

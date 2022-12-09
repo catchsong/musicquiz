@@ -2,20 +2,45 @@
 import { authService } from '../fbase';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-
-const Profile = () => {
+import { useState, useEffect } from "react";
+import refreshUser from '../App.js'
+const Profile = ({ userObj }) => {
+  const [post, setPost] = useState("");
   const history = useHistory();
   const onLogOutClick = () => {
     authService.signOut()
     history.push('/');
   };
-  
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if(userObj.displayName !== post) {
+      await userObj.updateProfile({
+        displayName: post
+      })
+      refreshUser();
+    }
+  };
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPost(value);
+  };  
   return (
     <>
       <button onClick={onLogOutClick}>
         Log Out
       </button>
-      <div>로그아웃 페이지</div>
+      <form onSubmit={onSubmit}>
+        <input
+          value={post}
+          onChange={onChange}
+          type="text"
+          placeholder="new nickname"
+          maxLength={10}
+        />
+        <input type="submit" value="Profilename" />
+      </form>
     </>
   );
 };
