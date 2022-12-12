@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import axios from 'axios';
 import { connect } from "react-redux";
-import { set_ans } from "../reducer/action";
+import { set_ans, set_play_onoff } from "../reducer/action";
 // redux
 const mapDispatchToProps = dispatch => {
     return {
+        set_play_onoff: play_onoff => dispatch(set_play_onoff(play_onoff)),
         set_ans: ans => dispatch(set_ans(ans)),
     };
-  };
+};
+const mapStateToProps = (state, props) => {
+    console.log(props.indexProp)
+    return {
+        play_onoff: state.gameData.play_onoff,
+        ans: state.gameData.ans,
+    };
+};
 
 
 //
@@ -19,6 +27,13 @@ const Musicplay = ({ set_ans }) => {
     const [play, setPlay] = useState(true);
     const [quizdb, setQuizdb] = useState([]);
 
+    const nextVideo = () => {
+        if (index < quizdb.length - 1) {
+            setIndex(index+1);
+        } else {
+            setIndex(0);
+        }
+      };
 
     useEffect(() => {
        axios.get('http://localhost:4000/quizdb')
@@ -28,7 +43,12 @@ const Musicplay = ({ set_ans }) => {
         })
       .catch();
     },[index]);
-    
+
+    //useEffect(() => {
+
+
+    //},[play_onoff]);
+    //
     
 
     return (
@@ -57,4 +77,4 @@ const Musicplay = ({ set_ans }) => {
     )
 };
 
-export default connect(null, mapDispatchToProps)(Musicplay);
+export default connect(mapStateToProps, mapDispatchToProps)(Musicplay);

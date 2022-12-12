@@ -3,7 +3,7 @@ import { authService } from '../fbase';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from "react";
-import refreshUser from '../App.js'
+import app from '../App.js'
 const Profile = ({ userObj }) => {
   const [post, setPost] = useState("");
   const history = useHistory();
@@ -17,7 +17,7 @@ const Profile = ({ userObj }) => {
       await userObj.updateProfile({
         displayName: post
       })
-      refreshUser();
+      app.refreshUser();
     }
   };
   const onChange = (event) => {

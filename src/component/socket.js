@@ -35,7 +35,7 @@ const Socket_chat = ({ans}) => {
   const sendMessageHandler = () => {
     socket.emit("message", [nickname,message,ans]);
     setMessage('');
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+    
   };
   const keyHandler = (e) => {
     if(e.key === 'Enter') {
@@ -45,7 +45,7 @@ const Socket_chat = ({ans}) => {
   const scrollRef = useRef();
 
   useEffect(() => {
-    
+    console.log(ip,port)
     if(socket.connected == true)
       setServer_status('ON')
     else
@@ -56,19 +56,17 @@ const Socket_chat = ({ans}) => {
       setAnswer(ans)
       socket.on("message", (message) => {
         const new_chat = chat.concat([[message[0], message[1]]])
-        console.log(chat);
         setChat(new_chat);
       });
       socket.on("correct", (message) => {
         
         const msg = `${message[0]}님이 정답을 맞추셨습니다!`;
         const new_chat = chat.concat([['notice', msg]])
-        console.log(chat);
         setChat(new_chat);
-        play.nextVideo();
       });
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }
-  },[message]);
+  },[chat]);
 
   return (
     <div className="App">
@@ -85,7 +83,7 @@ const Socket_chat = ({ans}) => {
       <div className={style.chatWrap}>
         <ul className={style.msg}>
           {chat.map((data, idx) => {
-            console.log(data, idx)
+
             return <li className={style.msg} key={idx}>
               {`${data[0]}: ${data[1]}`}
               </li>

@@ -1,5 +1,6 @@
 const init ={
-    ans : 'null'
+    ans : 'null',
+    play_onoff: 'false'
 };
 
 const gameData = (state = init, action) => {
@@ -9,6 +10,11 @@ const gameData = (state = init, action) => {
                 ...state,
                 ans: action.payload,
             };
+        case "PLAY_ONOFF":
+            return {
+                ...state,
+                play_onoff: action.payload,
+            }
 
         default:
             return state;
