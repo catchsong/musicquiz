@@ -2,7 +2,7 @@
 import { authService } from '../fbase';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Profile = ({ userObj, refreshUser }) => {
   const history = useHistory();

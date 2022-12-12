@@ -22,12 +22,12 @@ socketio.on("connection", (socket) => {
       {
         socketio.emit("message", message);
         socketio.emit("correct",message);
-        console.log(`correct: ${message}`);
+        //console.log(`correct: ${message}`);
       }
       else
       {
         socketio.emit("message", message);
-        console.log(`message: ${message}`);
+        //console.log(`message: ${message}`);
       }
     });
     
