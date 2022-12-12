@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import axios from 'axios';
 import { connect } from "react-redux";
-import { set_ans, set_play_onoff } from "../reducer/action";
+import { set_ans, set_play_onoff, set_video_idx } from "../reducer/action";
 // redux
 const mapDispatchToProps = dispatch => {
     return {
         set_play_onoff: play_onoff => dispatch(set_play_onoff(play_onoff)),
         set_ans: ans => dispatch(set_ans(ans)),
+        set_video_idx: video_idx => dispatch(set_video_idx(video_idx)),
     };
 };
 const mapStateToProps = (state, props) => {
@@ -15,40 +16,65 @@ const mapStateToProps = (state, props) => {
     return {
         play_onoff: state.gameData.play_onoff,
         ans: state.gameData.ans,
+        video_idx: state.gameData.video_idx,
     };
 };
 
 
 //
-const Musicplay = ({ set_ans }) => {
-    
+const Musicplay = ({ set_ans, ans, play_onoff, video_idx, set_video_idx }) => {
 
     const [index, setIndex] = useState(0);
     const [play, setPlay] = useState(true);
     const [quizdb, setQuizdb] = useState([]);
 
     const nextVideo = () => {
-        if (index < quizdb.length - 1) {
-            setIndex(index+1);
+        if (video_idx < quizdb.length - 1) {
+            console.log(`idx:${video_idx}`);
+            setIndex(video_idx+1);
         } else {
             setIndex(0);
         }
       };
 
+    const playHandler = (param) => {
+        setPlay(param);
+    }
+
     useEffect(() => {
-       axios.get('http://localhost:4000/quizdb')
-      .then((result) => {
-            setQuizdb(result.data)  
-            set_ans(quizdb[index]?.ans)
+        set_video_idx(index);
+        axios.get('http://localhost:4000/quizdb')
+        .then((result) => {
+            setQuizdb(result.data);  
+            set_ans(quizdb[index]?.ans);
         })
-      .catch();
+        .catch();   
+    },[]);
+
+    // 인덱스 변경시
+    useEffect(() => {
+        set_video_idx(index);
+        axios.get('http://localhost:4000/quizdb')
+        .then((result) => {
+            setQuizdb(result.data);  
+            set_ans(quizdb[index]?.ans);
+        })
+        .catch();
     },[index]);
 
-    //useEffect(() => {
+    // 외부 재생/일시정지 호출
+    useEffect(() => {
+        setPlay(play_onoff);
 
+    },[play_onoff]);
 
-    //},[play_onoff]);
-    //
+    //외부 인덱스 변경
+    useEffect(() => {
+        setIndex(video_idx);
+    },[video_idx]);
+    
+
+    
     
 
     return (
@@ -69,8 +95,8 @@ const Musicplay = ({ set_ans }) => {
         재생중 : {`${play}`}<br></br>
         정답 : {`${quizdb[index]?.ans}`}<br></br>
 
-        <button onClick={() => setPlay(true)}>재생</button>
-        <button onClick={() => setPlay(false)}>일시정지</button>
+        <button onClick={() => playHandler(true)}>재생</button>
+        <button onClick={() => playHandler(false)}>일시정지</button>
         <button onClick={nextVideo}>다음 영상</button>
         <br></br>
         </div>

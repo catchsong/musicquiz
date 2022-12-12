@@ -8,10 +8,10 @@ import Profile from "../pages/Profile";
 import Plus from '../pages/Plus';
 import Game from '../pages/Game';
 
-const AppRouter = ({ isLoggedIn , userObj}) => {
+const AppRouter = ({ isLoggedIn , userObj }) => {
   return (
     <Router>
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && <Navigation userObj={userObj}/>}
       <Switch>
         {isLoggedIn ? (
           <>
@@ -19,7 +19,7 @@ const AppRouter = ({ isLoggedIn , userObj}) => {
               <Home userObj={userObj} />
             </Route> 
             <Route exact path="/profile">
-              <Profile />
+              <Profile userObj={userObj} />
             </Route>
             <Route exact path="/plus">
               <Plus />

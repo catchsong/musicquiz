@@ -2,7 +2,8 @@ import { useEffect, useState, useRef} from "react";
 import io from "socket.io-client";
 import style from './socket.module.css'
 import {connect} from "react-redux";
-import * as play from './music_play.js';
+import { set_ans, set_play_onoff, set_video_idx } from "../reducer/action";
+
 
 const port = process.env.REACT_APP_PORT;
 const ip = process.env.REACT_APP_SOCKET_IP;
@@ -11,16 +12,24 @@ const socket = io.connect(`http://${ip}:${port}`);
 
 
 // redux
+const mapDispatchToProps = dispatch => {
+  return {
+      set_play_onoff: play_onoff => dispatch(set_play_onoff(play_onoff)),
+      set_ans: ans => dispatch(set_ans(ans)),
+      set_video_idx: video_idx => dispatch(set_video_idx(video_idx)),
+  };
+};
 const mapStateToProps = (state, props) => {
   console.log(props.indexProp)
-    return {
-        ans: state.gameData.ans,
-    };
+  return {
+      play_onoff: state.gameData.play_onoff,
+      ans: state.gameData.ans,
+      video_idx: state.gameData.video_idx,
+  };
 };
-//
 
 
-const Socket_chat = ({ans}) => {
+const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx}) => {
 /*      chat : [],
       message : "",
       nickname : "",  
@@ -30,7 +39,9 @@ const Socket_chat = ({ans}) => {
   const [nickname, setNickname] = useState("");
   const [server_status,setServer_status] = useState('ON');
   const [answer, setAnswer] = useState('');
-  
+  const [play,setPlay] = useState('');
+
+
 
   const sendMessageHandler = () => {
     socket.emit("message", [nickname,message,ans]);
@@ -44,6 +55,14 @@ const Socket_chat = ({ans}) => {
   }
   const scrollRef = useRef();
 
+  //렌더링시
+  useEffect(() => {
+    setAnswer(ans);
+    setPlay(false);
+
+  },[]);
+
+  // chat 변경시  
   useEffect(() => {
     console.log(ip,port)
     if(socket.connected == true)
@@ -63,6 +82,7 @@ const Socket_chat = ({ans}) => {
         const msg = `${message[0]}님이 정답을 맞추셨습니다!`;
         const new_chat = chat.concat([['notice', msg]])
         setChat(new_chat);
+        //play.nextVideo();
       });
       scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }
@@ -73,6 +93,10 @@ const Socket_chat = ({ans}) => {
     <div>
       <h2>서버 연결: {server_status}</h2>
       <h1>Message</h1>
+      <button onClick={() => set_play_onoff(true)}>재생</button>
+    <button onClick={() => set_play_onoff(false)}>일시정지</button>
+    <button onClick={() => set_video_idx(video_idx+1)}>다음영상</button>
+    <br></br>
       정답 : {`${answer}`}<br></br>
       nickname:
       
@@ -103,8 +127,10 @@ const Socket_chat = ({ans}) => {
         <button className={style.btn} onClick={sendMessageHandler}>Send</button>
       </div>
     </div>
+
+  
   </div>
   );
   }
 
-export default connect(mapStateToProps)(Socket_chat);
+export default connect(mapStateToProps, mapDispatchToProps)(Socket_chat);

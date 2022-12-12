@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import Post from "../component/Post";
 import { dbService, storageService } from '../fbase';
 const Home = ({ userObj }) => {
+  console.log(userObj)
   const [post, setPost] = useState("");
   const [posts, setPosts] = useState([]);
   const [attachment, setAttachment] = useState() 
