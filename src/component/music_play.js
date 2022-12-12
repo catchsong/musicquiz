@@ -41,15 +41,8 @@ const Musicplay = ({ set_ans, ans, play_onoff, video_idx, set_video_idx }) => {
         setPlay(param);
     }
 
-    useEffect(() => {
-        set_video_idx(index);
-        axios.get('http://localhost:4000/quizdb')
-        .then((result) => {
-            setQuizdb(result.data);  
-            set_ans(quizdb[index]?.ans);
-        })
-        .catch();   
-    },[]);
+    //초기화
+
 
     // 인덱스 변경시
     useEffect(() => {

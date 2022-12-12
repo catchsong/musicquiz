@@ -11,7 +11,7 @@ import rootReducer from "./reducer";
 
 
 
-// 위에서 만든 reducer를 스토어 만들때 넣어줍니다
+
 const store = createStore(rootReducer);
 
 
