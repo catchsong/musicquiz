@@ -7,8 +7,9 @@ import Navigation from './Navigation';
 import Profile from "../pages/Profile";
 import Plus from '../pages/Plus';
 import Game from '../pages/Game';
+import { useState } from "react";
 
-const AppRouter = ({ isLoggedIn , userObj }) => {
+const AppRouter = ({ isLoggedIn , userObj, refreshUser }) => {
   return (
     <Router>
       {isLoggedIn && <Navigation userObj={userObj}/>}
@@ -19,13 +20,13 @@ const AppRouter = ({ isLoggedIn , userObj }) => {
               <Home userObj={userObj} />
             </Route> 
             <Route exact path="/profile">
-              <Profile userObj={userObj} />
+              <Profile userObj={userObj} refreshUser={refreshUser}/>
             </Route>
             <Route exact path="/plus">
               <Plus />
             </Route>
             <Route exact path="/game">
-              <Game />
+              <Game userObj={userObj}/>
             </Route>
             <Redirect from="*" to="/" />
           </>

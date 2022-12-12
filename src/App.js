@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AppRouter from "./component/Router";
 import { authService } from "./fbase";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -25,17 +25,18 @@ function App() {
     })
   }, [])
   const refreshUser = () => {
+    console.log("작동중 ㅋ")
     const user = authService.currentUser;
     setUserObj({
       displayName: user.displayName,
       uid: user.uid,
       updateProfile: (args) => user.updateProfile(args),
-    });
+    })
   };
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} refreshUser={refreshUser}/>
       ) : (
         "Initializing."
       )}

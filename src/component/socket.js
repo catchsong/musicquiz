@@ -20,7 +20,7 @@ const mapStateToProps = (state, props) => {
 //
 
 
-const Socket_chat = ({ans}) => {
+const Socket_chat = ({ans, userObj}) => {
 /*      chat : [],
       message : "",
       nickname : "",  
@@ -30,7 +30,7 @@ const Socket_chat = ({ans}) => {
   const [nickname, setNickname] = useState("");
   const [server_status,setServer_status] = useState('ON');
   const [answer, setAnswer] = useState('');
-  
+  console.log(userObj)
 
   const sendMessageHandler = () => {
     socket.emit("message", [nickname,message,ans]);

@@ -1,11 +1,11 @@
 import Chat from '../component/socket.js';
 import Musicplay from "../component/music_play";
 
-const Game = () => {
+const Game = ({userObj}) => {
     return (
       <div>
         <Musicplay/>
-        <Chat/>
+        <Chat userObj = {userObj}/>
         
       </div>
     );
