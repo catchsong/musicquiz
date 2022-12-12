@@ -2,8 +2,9 @@
 import { authService } from '../fbase';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import refreshUser from '../App.js'
+
 const Profile = ({ userObj }) => {
   const [post, setPost] = useState("");
   const history = useHistory();
@@ -40,6 +41,7 @@ const Profile = ({ userObj }) => {
           maxLength={10}
         />
         <input type="submit" value="Profilename" />
+        nickname{userObj.displayName}
       </form>
     </>
   );

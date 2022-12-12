@@ -28,7 +28,13 @@ const Musicplay = ({ set_ans }) => {
         })
       .catch();
     },[index]);
-    
+    const nextVideo = () => {
+        if (index < quizdb.length - 1) {
+            setIndex(index+1);
+        } else {
+            setIndex(0);
+        }
+      };
     
 
     return (

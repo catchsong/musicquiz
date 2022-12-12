@@ -45,7 +45,7 @@ const Socket_chat = ({ans}) => {
   const scrollRef = useRef();
 
   useEffect(() => {
-    
+    console.log(ip, port)
     if(socket.connected == true)
       setServer_status('ON')
     else
@@ -65,7 +65,7 @@ const Socket_chat = ({ans}) => {
         const new_chat = chat.concat([['notice', msg]])
         console.log(chat);
         setChat(new_chat);
-        play.nextVideo();
+        //play.nextVideo();
       });
     }
   },[message]);

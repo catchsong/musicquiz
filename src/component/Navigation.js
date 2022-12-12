@@ -2,7 +2,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 
-const Navigation = (userObj) => {
+const Navigation = ({userObj}) => {
   return (
     <nav>
       <ul>
@@ -10,11 +10,10 @@ const Navigation = (userObj) => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/profile">
-            {userObj?.displayName
-              ? `${userObj.displayName}의 프로필`
-              : "프로필"}
-          </Link>
+            <Link to="/profile">{userObj?.displayName
+            ? `${userObj.displayName}의 프로필`
+            : "프로필"}
+            </Link>
         </li>
         <li>
             <Link to="/plus">Music Plus</Link>
