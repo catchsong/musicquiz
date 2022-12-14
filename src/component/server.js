@@ -6,8 +6,7 @@ const port = 5000;
 const http = require('http');
 const server = http.Server(app);
 const url = `http://localhost:${port}`
-
-
+let idx = 0
 
 const socketio = require("socket.io")(server, {
     cors: {
@@ -22,6 +21,10 @@ socketio.on("connection", (socket) => {
       {
         socketio.emit("message", message);
         socketio.emit("correct",message);
+        idx = idx+1;
+        if(idx > 2)
+          idx = 0;
+        socketio.emit("index",idx);
         //console.log(`correct: ${message}`);
       }
       else

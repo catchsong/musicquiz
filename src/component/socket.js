@@ -11,22 +11,6 @@ const ip = process.env.REACT_APP_SOCKET_IP;
 const socket = io.connect(`http://${ip}:${port}`);
 
 
-// redux
-const mapDispatchToProps = dispatch => {
-  return {
-      set_play_onoff: play_onoff => dispatch(set_play_onoff(play_onoff)),
-      set_ans: ans => dispatch(set_ans(ans)),
-      set_video_idx: video_idx => dispatch(set_video_idx(video_idx)),
-  };
-};
-const mapStateToProps = (state, props) => {
-  console.log(props.indexProp)
-  return {
-      play_onoff: state.gameData.play_onoff,
-      ans: state.gameData.ans,
-      video_idx: state.gameData.video_idx,
-  };
-};
 
 
 const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) => {
@@ -34,12 +18,12 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
       message : "",
       nickname : "",  
       server_connect : "OFF", */
+  //const [nickname, setNickname] = useState("");
   const [chat, setChat] = useState([]); 
   const [message, setMessage] = useState([]); 
-  const [nickname, setNickname] = useState("");
   const [server_status,setServer_status] = useState('ON');
   const [answer, setAnswer] = useState('');
-  const [play,setPlay] = useState('');
+
 
 
 
@@ -58,9 +42,12 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
   //렌더링시
   useEffect(() => {
     setAnswer(ans);
-    setPlay(false);
 
   },[]);
+
+  useEffect(() => {
+    setAnswer(ans);
+  },[ans]);
 
   // chat 변경시  
   useEffect(() => {
@@ -80,11 +67,13 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
         console.log(new_chat)
       });
       socket.on("correct", (message) => {
-        
         const msg = `${message[0]}님이 정답을 맞추셨습니다!`;
         const new_chat = chat.concat([['notice', msg]])
         setChat(new_chat);
         //play.nextVideo();
+      });
+      socket.on("index", (idx) => {
+        set_video_idx(idx);
       });
       scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }
@@ -100,8 +89,9 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
     <button onClick={() => set_video_idx(video_idx+1)}>다음영상</button>
     <br></br>
       정답 : {`${answer}`}<br></br>
-      nickname: {userObj.displayName}
-      <br></br>
+      nickname: {userObj.displayName}<br></br>
+      videoidx: {video_idx}<br></br>
+
       <div className={style.chatWrap}>
         <ul className={style.msg}>
           {chat.map((data, idx) => {
@@ -129,6 +119,25 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
   
   </div>
   );
-  }
+}
+
+// redux
+const mapStateToProps = (state, props) => {
+  return {
+      play_onoff: state.gameData.play_onoff,
+      ans: state.gameData.ans,
+      video_idx: state.gameData.video_idx,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+      set_play_onoff: play_onoff => dispatch(set_play_onoff(play_onoff)),
+      set_ans: ans => dispatch(set_ans(ans)),
+      set_video_idx: video_idx => dispatch(set_video_idx(video_idx)),
+  };
+};
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Socket_chat);
