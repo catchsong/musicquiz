@@ -21,10 +21,18 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
   //const [nickname, setNickname] = useState("");
   const [chat, setChat] = useState([]); 
   const [message, setMessage] = useState([]); 
-  const [server_status,setServer_status] = useState('ON');
+  const [server_status, setServer_status] = useState('ON');
   const [answer, setAnswer] = useState('');
-
-
+  const [RoomMaster, setRoomMaster] = useState(false);
+  const checkboxHandler = (checked) => {
+    console.log(checked);
+    if(checked){
+      setRoomMaster(true);
+    }
+    else
+      setRoomMaster(false);
+    
+  };
 
 
   const sendMessageHandler = () => {
@@ -39,14 +47,23 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
   }
   const scrollRef = useRef();
 
+  const game_start = () => {
+    if(RoomMaster)
+    {
+      socket.emit("game_start",0);
+    }
+  };
+
   //렌더링시
   useEffect(() => {
+    socket.emit("join", userObj.displayName);
     setAnswer(ans);
-
+    set_video_idx(video_idx); 
   },[]);
 
   useEffect(() => {
     setAnswer(ans);
+    console.log('hi');
   },[ans]);
 
   // chat 변경시  
@@ -58,31 +75,55 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
     else
       setServer_status('OFF')
 
-    if(server_status == 'ON')
+    if(server_status == 'ON') // 서버연결시만
     {
+      
       setAnswer(ans)
       socket.on("message", (message) => {
         const new_chat = chat.concat([[message[0], message[1]]])
         setChat(new_chat);
         console.log(new_chat)
       });
-      socket.on("correct", (message) => {
-        const msg = `${message[0]}님이 정답을 맞추셨습니다!`;
-        const new_chat = chat.concat([['notice', msg]])
-        setChat(new_chat);
-        //play.nextVideo();
-      });
       socket.on("index", (idx) => {
+        console.log(`서버:${idx}`);
         set_video_idx(idx);
       });
+      socket.on("user_connect", (message) => {
+        const new_chat = chat.concat([['notice', message]]);
+        setChat(new_chat);
+        console.log(new_chat)
+      });
+      socket.on("start_settings", (idx) => {
+        console.log("set start1");
+        set_video_idx(idx);
+        set_play_onoff(true);
+        //setAnswer(ans);
+        console.log("set start");
+      });
+      
+      if(RoomMaster)
+      {
+        socket.on("correct", (message) => {
+          const msg = `${message[0]}님이 정답을 맞추셨습니다!`;
+          const new_chat = chat.concat([['notice', msg]]);
+          setChat(new_chat);
+          socket.emit("master_index", (video_idx+1));
+        });
+      }
       scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }
-  },[chat]);
+    
+  },[socket, chat]);
 
   return (
     <div className="App">
     <div>
       <h2>서버 연결: {server_status}</h2>
+      <h4>방장만 체크</h4>
+      <input type="checkbox" id="cb1" onChange={e => {
+        checkboxHandler(e.currentTarget.checked, 'check');
+      }}>
+      </input>
       <h1>Message</h1>
       <button onClick={() => set_play_onoff(true)}>재생</button>
     <button onClick={() => set_play_onoff(false)}>일시정지</button>
@@ -91,6 +132,7 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
       정답 : {`${answer}`}<br></br>
       nickname: {userObj.displayName}<br></br>
       videoidx: {video_idx}<br></br>
+      <button onClick={() => game_start()}>게임시작</button>
 
       <div className={style.chatWrap}>
         <ul className={style.msg}>

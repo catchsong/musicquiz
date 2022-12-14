@@ -18,6 +18,7 @@ const gameData = (state = init, action) => {
             };
         case "NEXT_VIDEO":
             return {
+                ...state,
                 video_idx: action.payload,
             };
 
