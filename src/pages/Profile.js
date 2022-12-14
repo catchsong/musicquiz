@@ -30,7 +30,7 @@ const Profile = ({ userObj, refreshUser }) => {
         Log Out
       </button>
       <form onSubmit={ onSubmit } className="profileForm">
-                <input type="text" placeholder="닉네임" onChange={ onChange } value={ newDisplayName } autoFocus
+                <input type="text" placeholder="닉네임" onChange={ onChange } maxlength='10' value={ newDisplayName } autoFocus
                        className="formInput"/>
                 <input type="submit" value="프로필 수정" className="formBtn" style={{ marginTop: 10 }}/>
             </form>
