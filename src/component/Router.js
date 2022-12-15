@@ -7,7 +7,6 @@ import Navigation from './Navigation';
 import Profile from "../pages/Profile";
 import Plus from '../pages/Plus';
 import Game from '../pages/Game';
-import { useState } from "react";
 
 const AppRouter = ({ isLoggedIn , userObj, refreshUser }) => {
   return (

@@ -77,7 +77,7 @@ const Socket_chat = ({ans,set_play_onoff, video_idx, set_video_idx, userObj}) =>
       });
       scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }
-  },[chat]);
+  },[socket, chat]);
 
   return (
     <div className="App">

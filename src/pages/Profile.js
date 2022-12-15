@@ -1,16 +1,9 @@
 // routes/Profile.js
-import { authService } from '../fbase';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useState } from "react";
 
 const Profile = ({ userObj, refreshUser }) => {
-  const history = useHistory();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName != null ? userObj.displayName : "");
-  const onLogOutClick = () => {
-    authService.signOut()
-    history.push('/');
-  };
   const onChange = (event) => {
     const { target: { value } } = event;
     setNewDisplayName(value);
@@ -26,9 +19,6 @@ const Profile = ({ userObj, refreshUser }) => {
   };
   return (
     <>
-      <button onClick={onLogOutClick}>
-        Log Out
-      </button>
       <form onSubmit={ onSubmit } className="profileForm">
                 <input type="text" placeholder="닉네임" onChange={ onChange } maxlength='10' value={ newDisplayName } autoFocus
                        className="formInput"/>

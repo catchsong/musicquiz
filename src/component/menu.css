@@ -1,0 +1,18 @@
+ul {
+    list-style:none;
+
+}
+
+li {
+    margin-right: 30px;
+    float: left;
+    border: greenyellow solid 1px;
+    padding: 5px 10px;
+}
+
+.LogOut {
+    border: greenyellow solid 1px;
+    background-color: white;
+    padding: 5px 10px;
+    
+}

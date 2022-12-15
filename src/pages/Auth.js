@@ -1,7 +1,9 @@
 // routes/Auth.js
 import React, { useState } from 'react';
 import { authService, firebaseInstance } from '../fbase';
-
+import './Auth.css'
+import imgA from '../google.png'
+import imgB from '../github.png'
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,21 +50,28 @@ const Auth = () => {
   }
 
   return (
-    <div className='container col-6 col-md-4'>
+
     <div>
-        <form onSubmit={onSubmit}>
-          <input name="email" type="email" placeholder="Email" required value={email} onChange={onChange}/>
-          <input name="password" type="password" placeholder="Password" required value={password} onChange={onChange}/>
-          <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
-          {error}
-        </form>
-        <span onClick={toggleAccount}>{newAccount ? "Sign in" : "Create Account"}</span>
+    <div class="block" style={{height: "300px"}}>
+      <div class="centered">
         <div>
-          <button name="google" onClick={onSocialClick}>Continue with Google</button>
-          <button name="github" onClick={onSocialClick}>Continue with Github</button>
+          <form onSubmit={onSubmit}>
+            <input name="email" type="email" placeholder="Email" required value={email} onChange={onChange}/>
+            <input name="password" type="password" placeholder="Password" required value={password} onChange={onChange}/>
+            <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
+            {error}
+          </form>
+          <span onClick={toggleAccount}>{newAccount ? "Sign in" : "Create Account"}</span>
+          <div>
+            <button name="google" onClick={onSocialClick}><img src={ imgA }width='35' height='35' alt='testA'></img>Google</button>
+            <button name="github" onClick={onSocialClick}><img src={ imgB }width='35' height='35' alt='testA'></img>Github</button>
+          </div>
         </div>
       </div>
     </div>
+    </div>
+    
+    
   );
 };
 
